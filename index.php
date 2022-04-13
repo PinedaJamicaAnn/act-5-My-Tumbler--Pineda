@@ -1,3 +1,49 @@
+<?php
+//start the session function
+SESSION_START();
+
+
+//create a pre defined username and password since we do not have database
+$acc_username = "JamicaAnn";
+$acc_password = "jamica28";
+$acc_fullname = "Jamica Ann Pineda";
+$acc_address  = "Marinduque PH";
+
+//check  the current url for the redirection later
+$url_add = "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+
+
+//condition to know if the button is clicked
+if(isset($_REQUEST['login_button'])=== true){
+
+//get the username and password from the form and compare to the predefined username and password
+
+if($_REQUEST['form_username'] != $acc_username){
+header("Location: ".$url_add."?notexist ");
+}
+
+else if ($_REQUEST['form_username']== $acc_username && $_REQUEST ['form_password'] != $acc_password){
+header("Location: ".$url_add."?wrongpass ");
+
+}
+
+else if ($_REQUEST['form_username']== $acc_username && $_REQUEST ['form_password'] == $acc_password){
+header("Location: ".$url_add."?success");
+
+
+
+$_SESSION['ses_username']= $acc_username;
+$_SESSION['ses_password']= $acc_password;
+$_SESSION['ses_fullname']= $acc_fullname;
+$_SESSION['ses_address'] = $acc_address;
+
+}
+
+} //end of login button
+
+
+?>
+
 
 <!doctype html>
 <html lang="en">
@@ -31,6 +77,33 @@
 						<form method="POST"class="login-form">
 
 		      		<div class="form-group">
+
+		      			<?php
+		      			if(isset($_REQUEST['notexist'])===true){
+
+	              echo "<div class='alert alert-danger' role 'alert' > Username does not exist... </div>";
+	            }
+	            else if (isset($_REQUEST['wrongpass'])===	true){
+	            	echo "<div class='alert alert-warning' role 'alert' > Incorrect Passwrod... </div>";
+
+}
+	            	    else if (isset($_REQUEST['success'])===	true){
+	            	echo "<div class='alert alert-success' role 'alert'> Redirecting ... </div>";
+	            	header("Refresh: 5; url= account.php");
+
+	            }else if (isset($_REQUEST['logout'])===	true){
+	            	echo "<div class='alert alert-info' role 'alert' > Thank you... </div>";
+
+	            }else if (isset($_REQUEST['logfirst'])===	true){
+	            	echo "<div class='alert alert-info' role 'alert' > Please Login First. </div>";
+
+	            }else if (isset($_SESSION['ses_username'])===	true){
+	            	 	echo "<div class='alert alert-warning' role 'alert' > You are still login. Please <a href='account.php'>Click here</a> to proceed. </div>";
+
+                }
+
+		      			?>
+		      			
 
 		      			<input type="text" class="form-control rounded-left" placeholder="Username" name= "form_username"required>
 		      		</div>

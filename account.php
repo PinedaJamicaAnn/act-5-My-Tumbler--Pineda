@@ -1,3 +1,20 @@
+<?php
+//start the session
+session_start();
+
+//check  if the session variable are set or not
+//this is to check if the account is login or not
+
+if(isset($_SESSION['ses_username'])===false){
+header("Location:index.php?logfirst");
+
+} elseif (isset($_REQUEST['logout'])===true){
+    session_destroy();
+    header("Location: index.php?logout");
+}
+
+?>
+
 
 
 <!doctype html>
@@ -41,10 +58,11 @@ body {
 
                     </div>
                     <div class="media-body mb-5 text-white">
-                        <h4 class="mt-0 mb-0">Jamica Ann Pineda
+                        <h4 class="mt-0 mb-0"><?php echo $_SESSION['ses_fullname']; ?>
+                        
                     </h4>
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>
-                           Marinduque PH
+                           <?php echo $_SESSION['ses_address']; ?>
                          </p>
                     </div>
                 </div>
